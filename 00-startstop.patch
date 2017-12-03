@@ -301,7 +301,7 @@ index 2c745e8..8905836 100644
  	tristate "Thinkpad Hard Drive Active Protection System (hdaps)"
  	depends on INPUT
 diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 117be48..305ae91 100644
+index 117be48..0c2ee0e 100644
 --- a/drivers/platform/x86/thinkpad_acpi.c
 +++ b/drivers/platform/x86/thinkpad_acpi.c
 @@ -331,6 +331,7 @@ static struct {
@@ -312,7 +312,7 @@ index 117be48..305ae91 100644
  } tp_features;
  
  static struct {
-@@ -9201,6 +9202,376 @@ static struct ibm_struct mute_led_driver_data = {
+@@ -9201,6 +9202,375 @@ static struct ibm_struct mute_led_driver_data = {
  	.resume = mute_led_resume,
  };
  
@@ -413,6 +413,7 @@ index 117be48..305ae91 100644
 +    return 0;
 +
 +}
++EXPORT_SYMBOL_GPL(tpacpi_get_start_threshold);
 +
 +int tpacpi_get_stop_threshold(int battery, int* res)
 +{
@@ -444,6 +445,7 @@ index 117be48..305ae91 100644
 +    return 0;
 +
 +}
++EXPORT_SYMBOL_GPL(tpacpi_get_stop_threshold);
 +
 +int tpacpi_set_start_threshold(int battery, int value)
 +{
@@ -499,6 +501,7 @@ index 117be48..305ae91 100644
 +    return 0;
 +
 +}
++EXPORT_SYMBOL_GPL(tpacpi_set_start_threshold);
 +
 +int tpacpi_set_stop_threshold(int battery, int value)
 +{
@@ -555,16 +558,12 @@ index 117be48..305ae91 100644
 +    return 0;
 +
 +}
++EXPORT_SYMBOL_GPL(tpacpi_set_stop_threshold);
 +
 +int tpacpi_battery_get_functionality(void)
 +{
 +    return tp_features.battery;
 +}
-+
-+EXPORT_SYMBOL_GPL(tpacpi_get_start_threshold);
-+EXPORT_SYMBOL_GPL(tpacpi_get_stop_threshold);
-+EXPORT_SYMBOL_GPL(tpacpi_set_start_threshold);
-+EXPORT_SYMBOL_GPL(tpacpi_set_stop_threshold);
 +EXPORT_SYMBOL_GPL(tpacpi_battery_get_functionality);
 +
 +/**
@@ -689,7 +688,7 @@ index 117be48..305ae91 100644
  /****************************************************************************
   ****************************************************************************
   *
-@@ -9647,6 +10018,12 @@ static struct ibm_init_struct ibms_init[] __initdata = {
+@@ -9647,6 +10017,12 @@ static struct ibm_init_struct ibms_init[] __initdata = {
  		.init = mute_led_init,
  		.data = &mute_led_driver_data,
  	},
