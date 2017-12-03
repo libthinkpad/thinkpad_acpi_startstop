@@ -301,7 +301,7 @@ index 2c745e8..8905836 100644
  	tristate "Thinkpad Hard Drive Active Protection System (hdaps)"
  	depends on INPUT
 diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 117be48..c3ec9d6 100644
+index 117be48..305ae91 100644
 --- a/drivers/platform/x86/thinkpad_acpi.c
 +++ b/drivers/platform/x86/thinkpad_acpi.c
 @@ -331,6 +331,7 @@ static struct {
@@ -419,7 +419,7 @@ index 117be48..c3ec9d6 100644
 +
 +    int value;
 +
-+    if (!(tp_features.battery & STOP_SUPPORT))) {
++    if (!(tp_features.battery & STOP_SUPPORT)) {
 +	return -ENODEV;
 +    }
 +
