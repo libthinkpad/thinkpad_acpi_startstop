@@ -301,7 +301,7 @@ index 2c745e8..8905836 100644
  	tristate "Thinkpad Hard Drive Active Protection System (hdaps)"
  	depends on INPUT
 diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 117be48..d304d81 100644
+index 117be48..c7aa3a7 100644
 --- a/drivers/platform/x86/thinkpad_acpi.c
 +++ b/drivers/platform/x86/thinkpad_acpi.c
 @@ -331,6 +331,7 @@ static struct {
@@ -312,7 +312,7 @@ index 117be48..d304d81 100644
  } tp_features;
  
  static struct {
-@@ -9201,6 +9202,368 @@ static struct ibm_struct mute_led_driver_data = {
+@@ -9201,6 +9202,373 @@ static struct ibm_struct mute_led_driver_data = {
  	.resume = mute_led_resume,
  };
  
@@ -321,6 +321,11 @@ index 117be48..d304d81 100644
 + */
 +
 +#ifdef CONFIG_THINKPAD_ACPI_BWC
++
++#define TPACPI_BAT_START_SUPPORT (tp_features.battery & 1)
++#define TPACPI_BAT_STOP_SUPPORT  (tp_features.battery & (1 << 1)
++#define TPACPI_START_INDIVIDUAL  (tp_features.battery & (1 << 2)
++#define TPACPI_STOP_INDIVIDUAL   (tp_features.battery & (1 << 3)
 +
 +struct thinkpad_battery_info {
 +    int charge_start_primary;
@@ -381,12 +386,12 @@ index 117be48..d304d81 100644
 +    int value;
 +
 +    // this feature is not supported, see tpacpi_battery_init
-+    if (!(tp_features.battery & 1)) {
++    if (!TPACPI_BAT_START_SUPPORT) {
 +	return -ENODEV;
 +    }
 +
 +    // individual battery addressing is not supported, use primary
-+    if (!(tp_features.battery & (1 << 2))) {
++    if (!TPACPI_START_INDIVIDUAL)) {
 +	battery = TPACPI_BATTERY_PRIMARY;
 +    }
 +
@@ -412,12 +417,12 @@ index 117be48..d304d81 100644
 +
 +    int value;
 +
-+    if (!(tp_features.battery & (1 << 1))) {
++    if (!TPACPI_BAT_STOP_SUPPORT)) {
 +	return -ENODEV;
 +    }
 +
 +    // individual battery addressing is not supported, use primary
-+    if (!(tp_features.battery & (1 << 3))) {
++    if (!TPACPI_STOP_INDIVIDUAL)) {
 +	battery = TPACPI_BATTERY_PRIMARY;
 +    }
 +
@@ -447,12 +452,12 @@ index 117be48..d304d81 100644
 +    }
 +
 +    // this feature is not supported, see tpacpi_battery_init
-+    if (!(tp_features.battery & 1)) {
++    if (!TPACPI_BAT_START_SUPPORT) {
 +	return -ENODEV;
 +    }
 +
 +    // per-battery set not supported
-+    if (!(tp_features.battery & (1 << 2))) {
++    if (!TPACPI_START_INDIVIDUAL)) {
 +	battery = TPACPI_BATTERY_PRIMARY;
 +    }
 +
@@ -502,12 +507,12 @@ index 117be48..d304d81 100644
 +    }
 +
 +    // this feature is not supported, see tpacpi_battery_init
-+    if (!(tp_features.battery & (1 << 1))) {
++    if (!TPACPI_BAT_STOP_SUPPORT)) {
 +	return -ENODEV;
 +    }
 +
 +    // per-battery set not supported
-+    if (!(tp_features.battery & (1 << 3))) {
++    if (!TPACPI_STOP_INDIVIDUAL)) {
 +	battery = TPACPI_BATTERY_PRIMARY;
 +    }
 +
@@ -681,7 +686,7 @@ index 117be48..d304d81 100644
  /****************************************************************************
   ****************************************************************************
   *
-@@ -9647,6 +10010,12 @@ static struct ibm_init_struct ibms_init[] __initdata = {
+@@ -9647,6 +10015,12 @@ static struct ibm_init_struct ibms_init[] __initdata = {
  		.init = mute_led_init,
  		.data = &mute_led_driver_data,
  	},
