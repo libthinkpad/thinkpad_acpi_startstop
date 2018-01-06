@@ -1,7 +1,7 @@
 From 10db178bbc70276d77d23ab7b286813b9cf36b50 Mon Sep 17 00:00:00 2001
 From: Ognjen Galic <smclt30p@gmail.com>
 Date: Wed, 3 Jan 2018 11:48:51 +0100
-Subject: [PATCH 3/4] thinkpad_acpi: Add support for battery thresholds
+Subject: [PATCH v12 3/4] thinkpad_acpi: Add support for battery thresholds
 
 thinkpad_acpi registers two new attributes for each battery:
 
